@@ -102,6 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+Students_Performance_env
 .env
 .venv
 env/
