@@ -1,4 +1,4 @@
-#!/home/DS_Projects/Students_Performance_venv/bin/activate
+#!/home/DS_Projects/Students_Performance_env/bin/activate
 #source Students_Performance_venv/bin/activate
 #simple fibonacci for initial commit
 
