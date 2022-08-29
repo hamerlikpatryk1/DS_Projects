@@ -102,7 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.Students_Performance_env/ #ignores used env
+.Students_Performance_env #ignores used env
 Students_Performance_env/
 Students_Performance_env/*
 .env
