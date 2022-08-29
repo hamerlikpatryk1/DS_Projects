@@ -4,17 +4,23 @@
 # pip install -r requirements.txt
 
 # Modulo function -> check if number is even or odd
+import csv
 import numpy as np
-import pandas as pd
 
 # get data from csv file
-students_data = pd.read_csv('StudentsPerformance.csv', sep=',', header= None)
-students_array = np.array(students_data)
-print(students_array)
+# problem with type in np csv loader made me use csv.reader
+with open ('StudentsPerformance.csv', 'r') as f:
+    students_data = list(csv.reader(f, delimiter=','))
+
+students_data = np.array(students_data)
+print(students_data)
+print(type(students_data))
 
 # sorting the array -> chose column/row/and sorting algorithm
-sorted_grades = np.sort(students_array) #axis = 0, kind = 'quicksort', order = 5)
-print(sorted_grades)
-print(type(sorted_grades))
 
-pd.DataFrame(sorted_grades).to_csv('grades_data.csv')
+#print(students_array.sort(order = 'math score')) #axis = 0, kind = 'quicksort', order = 5)
+
+# write to csv
+with open('grades_data.csv', 'w', encoding='UTF8') as f:
+    writer = csv.writer(f)
+    writer.writerows(students_data)
