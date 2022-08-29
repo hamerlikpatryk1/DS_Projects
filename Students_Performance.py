@@ -4,6 +4,7 @@
 # pip install -r requirements.txt
 
 # Modulo function -> check if number is even or odd
+from heapq import merge
 import numpy as np
 import pandas as pd
 
@@ -13,7 +14,7 @@ print(students_data.to_string())
 print(type(students_data))
 
 # sorting the array -> chose column/row/and sorting algorithm
-#print(students_data.argsort(order = 'math score')) #axis = 0, kind = 'quicksort', order = 5)
-
+grades = students_data.sort_values(by = "math score", ascending = False, kind = 'mergesort') #axis = 0, kind = 'quicksort', order = 5)
+print(grades)
 # write to csv
-students_data.to_csv('grades_data.csv', index=False)
+grades.to_csv('grades_data.csv', index=False)
