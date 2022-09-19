@@ -26,17 +26,54 @@ def bestgrade(grades):
                          (grades['writing score'] >= 66)]
     return good_grades
 
-#def bahwithtest(grades):
-#    bahelortest = grades.loc
-#    return bahelortest
+# bachelores with course 
+def bachwithtest(grades):
+    bachelortest = grades.loc[(grades['parental level of education'] == "bachelor's degree") &
+                         (grades['test preparation course'] == "completed")]
+    return bachelortest
+
+# highschool with course    
+def schoolwithtest(grades):
+    schooltest = grades.loc[(grades['parental level of education'] == "some high school") &
+                         (grades['test preparation course'] == "completed")]
+    return schooltest
+
+# mean of bachwithtest
+def bachmean(grades, score):
+    bachtestmean = bachwithtest(grades)[score].mean()
+    return bachtestmean
+
+# mean of high schoolers
+def schoolersmean(grades, score):
+    schoolerstestmean = schoolwithtest(grades)[score].mean()
+    return schoolerstestmean
 
 students_data = readCSV('StudentsPerformance.csv')
 
 grades = mathsort(students_data)
-# sorting the array -> chose column/row/and sorting algorithm
+# 1 metric 
 good_grades = bestgrade(grades)
 
-# 4 metryki -> 1 best grades, 2 mean of bachelores with test complete , 3 mean + median of test complete and uncompleted, 4 mean + median of males/females with standard lunch 
+#2 metric -> mean of bachelores with test complete
+print(
+    """
+    Bachelors children math mean = """, bachmean(grades, 'math score'),
+    """ 
+    Bachelors children reading mean = """,bachmean(grades,'reading score'),
+    """
+    Bachelors children writing mean = """,bachmean(grades,'writing score')
+)
+# high school + completed courses
+print(
+    """
+    High schoolers children math mean = """, schoolersmean(grades, 'math score'),
+    """ 
+    High schoolers children reading mean = """,schoolersmean(grades,'reading score'),
+    """
+    High schoolers children writing mean = """,schoolersmean(grades,'writing score')
+)
+
+# 4 metryki -> 1 best grades, 2 mean of bachelores with test complete -> compare with high school and completed coures , 3 mean + median of test complete and uncompleted, 4 mean + median of males/females with standard lunch 
 #   
 """ STATISTIC
 math_stat = grades['math score'].describe()
@@ -53,3 +90,4 @@ print('Mean of the reading score = ', reading_mean, ', median = ', reading_media
 
 # write to csv
 good_grades.to_csv('grades_data.csv', index=False)
+bachwithtest(grades).to_csv('bach_grades.csv', index=False)
