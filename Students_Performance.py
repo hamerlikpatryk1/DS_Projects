@@ -123,88 +123,86 @@ def womennolunchmedian(grades, score):
     return womannolunch
 
 def womennolunchmean(grades, score):
-    womannolunch = womenwithoutlunch(grades)[score].mean()
+    womannolunch = womenwithoutlunch(grades)[score].mean() #nie trxebas przypisywać zmiennej - od razu return -->> dać zmienne/funkcje camel case (podłoga)
     return womannolunch
 
-students_data = readCSV('StudentsPerformance.csv')
+def main():
+    students_data = readCSV('StudentsPerformance.csv')
 
 # Main variable -> sorted grades
-grades = mathsort(students_data)
+    grades = mathsort(students_data)
 
 # 1 metric 
-good_grades = bestgrade(grades)
+    good_grades = bestgrade(grades)
 
 # 2 metric
 # mean of bachelores + completed course
-print(
-    '\nBachelors children math mean = ', bachmean(grades, 'math score'),
-    '\nBachelors children reading mean = ',bachmean(grades,'reading score'),
-    '\nBachelors children writing mean = ', bachmean(grades,'writing score'))
+    print(
+        '\nBachelors children math mean = ', bachmean(grades, 'math score'),
+        '\nBachelors children reading mean = ',bachmean(grades,'reading score'),
+        '\nBachelors children writing mean = ', bachmean(grades,'writing score'))
 
 # mean of high school + completed courses
-print(
-    '\nHigh schoolers children math mean = ', schoolersmean(grades, 'math score'), 
-    '\nHigh schoolers children reading mean = ', schoolersmean(grades,'reading score'),
-    '\nHigh schoolers children writing mean = ', schoolersmean(grades,'writing score'))
+    print(
+        '\nHigh schoolers children math mean = ', schoolersmean(grades, 'math score'), 
+        '\nHigh schoolers children reading mean = ', schoolersmean(grades,'reading score'),
+        '\nHigh schoolers children writing mean = ', schoolersmean(grades,'writing score'))
 
 # 3 metric mean + median of course complete and uncompleted
 # Mean
-print ( 
-    '\nCourse completed math mean = ', coursemean(grades, 'math score'),
-    '\nCourse completed reading mean =', coursemean(grades,'reading score'),
-    '\nCourse completed writing mean = ', coursemean(grades,'writing score') )
-print ( 
-    '\nNone course completed math mean = ', nocoursemean(grades, 'math score'),
-    '\nNone course completed reading mean =', nocoursemean(grades,'reading score'),
-    '\nNone course completed writing mean = ', nocoursemean(grades,'writing score') )
+    print ( 
+        '\nCourse completed math mean = ', coursemean(grades, 'math score'),
+        '\nCourse completed reading mean =', coursemean(grades,'reading score'),
+        '\nCourse completed writing mean = ', coursemean(grades,'writing score') )
+    print ( 
+        '\nNone course completed math mean = ', nocoursemean(grades, 'math score'),
+        '\nNone course completed reading mean =', nocoursemean(grades,'reading score'),
+        '\nNone course completed writing mean = ', nocoursemean(grades,'writing score') )
 # Median
-print ( 
-    '\nCourse completed math median = ', coursemedian(grades, 'math score'),
-    '\nCourse completed reading median =', coursemedian(grades,'reading score'),
-    '\nCourse completed writing median = ', coursemedian(grades,'writing score') )
-print ( 
-    '\nNone course completed math median = ', nocoursemedian(grades, 'math score'),
-    '\nNone course completed reading median =', nocoursemedian(grades,'reading score'),
-    '\nNone course completed writing median = ', nocoursemedian(grades,'writing score') )
+    print ( 
+        '\nCourse completed math median = ', coursemedian(grades, 'math score'),
+        '\nCourse completed reading median =', coursemedian(grades,'reading score'),
+        '\nCourse completed writing median = ', coursemedian(grades,'writing score') )
+    print ( 
+        '\nNone course completed math median = ', nocoursemedian(grades, 'math score'),
+        '\nNone course completed reading median =', nocoursemedian(grades,'reading score'),
+        '\nNone course completed writing median = ', nocoursemedian(grades,'writing score') )
  
 # Dodać plotting i zapisać go do pliku
 
 # 4 metric
 # Men with lunch 
-print ( 
-    '\nMen with lunch math mean = ', menlunchmean(grades, 'math score'),
-    '\nMen with lunch reading mean =', menlunchmean(grades,'reading score'),
-    '\nMen with lunch writing mean = ', menlunchmean(grades,'writing score'),
-    '\nMen with lunch math median = ', menlunchmedian(grades, 'math score'),
-    '\nMen with lunch reading median =', menlunchmedian(grades,'reading score'),
-    '\nMen with lunch writing median = ', menlunchmedian(grades,'writing score'))
-# Woman With lunch 
-print ( 
-    '\nWomen with lunch math mean = ', womenlunchmean(grades, 'math score'),
-    '\nWomen with lunch reading mean =', womenlunchmean(grades,'reading score'),
-    '\nWomen with lunch writing mean = ', womenlunchmean(grades,'writing score'),
-    '\nWomen with lunch math median = ', womenlunchmedian(grades, 'math score'),
-    '\nWomen with lunch reading median =', womenlunchmedian(grades,'reading score'),
-    '\nWomen with lunch writing median = ', womenlunchmedian(grades,'writing score'))
+    print ( 
+        '\nMen with lunch math mean = ', menlunchmean(grades, 'math score'),
+        '\nMen with lunch reading mean =', menlunchmean(grades,'reading score'),
+        '\nMen with lunch writing mean = ', menlunchmean(grades,'writing score'),
+        '\nMen with lunch math median = ', menlunchmedian(grades, 'math score'),
+        '\nMen with lunch reading median =', menlunchmedian(grades,'reading score'),
+        '\nMen with lunch writing median = ', menlunchmedian(grades,'writing score'))
+# Woman with lunch 
+    print ( 
+        '\nWomen with lunch math mean = ', womenlunchmean(grades, 'math score'),
+        '\nWomen with lunch reading mean =', womenlunchmean(grades,'reading score'),
+        '\nWomen with lunch writing mean = ', womenlunchmean(grades,'writing score'),
+        '\nWomen with lunch math median = ', womenlunchmedian(grades, 'math score'),
+        '\nWomen with lunch reading median =', womenlunchmedian(grades,'reading score'),
+        '\nWomen with lunch writing median = ', womenlunchmedian(grades,'writing score'))
 # Men without lunch
-print ( 
-    '\nMen with lunch math mean = ', mennolunchmean(grades, 'math score'),
-    '\nMen with lunch reading mean =', mennolunchmean(grades,'reading score'),
-    '\nMen with lunch writing mean = ', mennolunchmean(grades,'writing score'),
-    '\nMen with lunch math median = ', mennolunchmedian(grades, 'math score'),
-    '\nMen with lunch reading median =', mennolunchmedian(grades,'reading score'),
-    '\nMen with lunch writing median = ', mennolunchmedian(grades,'writing score'))
+    print ( 
+        '\nMen without lunch math mean = ', mennolunchmean(grades, 'math score'),
+        '\nMen without lunch reading mean =', mennolunchmean(grades,'reading score'),
+        '\nMen without lunch writing mean = ', mennolunchmean(grades,'writing score'),
+        '\nMen without lunch math median = ', mennolunchmedian(grades, 'math score'),
+        '\nMen without lunch reading median =', mennolunchmedian(grades,'reading score'),
+        '\nMen without lunch writing median = ', mennolunchmedian(grades,'writing score'))
 # Woman without lunch
-print ( 
-    '\nWomen with lunch math mean = ', womennolunchmean(grades, 'math score'),
-    '\nWomen with lunch reading mean =', womennolunchmean(grades,'reading score'),
-    '\nWomen with lunch writing mean = ', womennolunchmean(grades,'writing score'),
-    '\nWomen with lunch math median = ', womennolunchmedian(grades, 'math score'),
-    '\nWomen with lunch reading median =', womennolunchmedian(grades,'reading score'),
-    '\nWomen with lunch writing median = ', womennolunchmedian(grades,'writing score'))
-    
-# 4 metryki -> 1 best grades, 2 mean of bachelores with test complete -> compare with high school and completed coures , 
-# 3 mean + median of test complete and uncompleted, 4 mean + median of males/females with standard lunch + without lunch 
+    print ( 
+        '\nWomen without lunch math mean = ', womennolunchmean(grades, 'math score'),
+        '\nWomen without lunch reading mean =', womennolunchmean(grades,'reading score'),
+        '\nWomen without lunch writing mean = ', womennolunchmean(grades,'writing score'),
+        '\nWomen without lunch math median = ', womennolunchmedian(grades, 'math score'),
+        '\nWomen without lunch reading median =', womennolunchmedian(grades,'reading score'),
+        '\nWomen without lunch writing median = ', womennolunchmedian(grades,'writing score'))
 
 # plotting data
 # sns.relplot(data=grades, x='reading score', y='math score', hue ='test preparation course')
@@ -213,5 +211,9 @@ print (
 # plt.show()
 
 # write to csv
-good_grades.to_csv('grades_data.csv', index=False)
-bachwithtest(grades).to_csv('bach_grades.csv', index=False)
+    good_grades.to_csv('grades_data.csv', index=False)
+    bachwithtest(grades).to_csv('bach_grades.csv', index=False)
+
+
+if __name__ == "__main__":
+    main()
