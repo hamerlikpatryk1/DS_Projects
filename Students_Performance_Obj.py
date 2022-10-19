@@ -16,13 +16,13 @@ class PrepareData:
         self.name = name
 
     def preparator(self, filename):
-        self.students_data = self._read_CSV(filename)
-        self.grades = self._math_sort(self.students_data)
-        self.good_grades = self._best_grade(self.grades)
-        print(self.students_data)
-        print(self.grades)
-        print(self.good_grades)
-        return self.students_data, self.grades, self.good_grades
+        students_data = self._read_CSV(filename)
+        grades = self._math_sort(students_data)
+        good_grades = self._best_grade(grades)
+        print(students_data)
+        print(grades)
+        print(good_grades)
+        return students_data, grades, good_grades
     
     def _read_CSV(self, filename): 
         students_data = pd.read_csv(filename)
@@ -144,14 +144,12 @@ def women_no_lunch_mean(grades, score):
 def main():
 
     prepared_data = PrepareData("Patryk")
-    prepared_data.preparator('StudentsPerformance.csv')
-    students_data = prepared_data.preparator(students_data)
-
+    students_data = prepared_data.preparator('StudentsPerformance.csv')[0]
 # Main variable -> sorted grades
-    grades = prepared_data.preparator(grades)
-
+    grades = prepared_data.preparator('StudentsPerformance.csv')[1]
 # 1 metric 
-    good_grades = prepared_data.preparator(good_grades)
+    good_grades = prepared_data.preparator('StudentsPerformance.csv')[2]
+    print(good_grades)
 # 2 metric
 # mean of bachelores + completed course
     print(
