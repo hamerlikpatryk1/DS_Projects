@@ -41,16 +41,38 @@ class PrepareData:
                             (grades['writing score'] >= 66)]
         return good_grades
 
-# bachelores with course 
-def bach_with_test(grades):
-    bachelor_test = grades.loc[(grades['parental level of education'] == "bachelor's degree") &
-                         (grades['test preparation course'] == "completed")]
-    return bachelor_test
-# highschool with course    
-def school_with_test(grades):
-    school_test = grades.loc[(grades['parental level of education'] == "some high school") &
-                         (grades['test preparation course'] == "completed")]
-    return school_test
+class EducationWithCourse:
+    def __init__(self):
+        print(f"Now I'll show results based curse done and level of parental education")
+
+    def participants_with_test(self, grades, score):
+        bachelor_test = self._bach_with_test(grades)
+        school_test = self._school_with_test(grades)
+        bach_test_mean = self._bach_mean( bachelor_test, score)
+        schoolers_test_mean = self._schoolers_mean(school_test, score)
+        return bachelor_test, school_test, bach_test_mean, schoolers_test_mean 
+
+    # bachelores with course 
+    def _bach_with_test(self, grades):
+        bachelor_test = grades.loc[(grades['parental level of education'] == "bachelor's degree") &
+                            (grades['test preparation course'] == "completed")]
+        return bachelor_test
+
+    # highschool with course    
+    def _school_with_test(self, grades):
+        school_test = grades.loc[(grades['parental level of education'] == "some high school") &
+                            (grades['test preparation course'] == "completed")]
+        return school_test
+
+    # mean of bachwithtest
+    def _bach_mean(self, bachelor_test, score):
+        bach_test_mean = bachelor_test[score].mean()
+        return bach_test_mean
+
+    # mean of high schoolers
+    def _schoolers_mean(self, school_test, score):
+        schoolers_test_mean = school_test[score].mean()
+        return schoolers_test_mean
 
 # List of course completed
 def course_completed(grades):
@@ -81,15 +103,6 @@ def women_without_lunch(grades):
     women_no_lunch = grades.loc[(grades['gender'] == "female")&
                             (grades['lunch'] =='free/reduced')]
     return women_no_lunch
-
-# mean of bachwithtest
-def bach_mean(grades, score):
-    bach_test_mean = bach_with_test(grades)[score].mean()
-    return bach_test_mean
-# mean of high schoolers
-def schoolers_mean(grades, score):
-    schoolers_test_mean = school_with_test(grades)[score].mean()
-    return schoolers_test_mean
 
 # mean of course completed
 def course_mean(grades, score):
@@ -145,23 +158,32 @@ def main():
 
     prepared_data = PrepareData("Patryk")
     students_data = prepared_data.preparator('StudentsPerformance.csv')[0]
+    print(students_data)
 # Main variable -> sorted grades
     grades = prepared_data.preparator('StudentsPerformance.csv')[1]
 # 1 metric 
     good_grades = prepared_data.preparator('StudentsPerformance.csv')[2]
     print(good_grades)
-# 2 metric
-# mean of bachelores + completed course
-    print(
-        '\nBachelors children math mean = ', bach_mean(grades, 'math score'),
-        '\nBachelors children reading mean = ',bach_mean(grades,'reading score'),
-        '\nBachelors children writing mean = ', bach_mean(grades,'writing score'))
 
-# mean of high school + completed courses
+# 2 metric
+    mean_data = EducationWithCourse()
+    bach_mean_math = mean_data.participants_with_test(grades, 'math score')[2]
+    bach_mean_read = mean_data.participants_with_test(grades, 'reading score')[2]
+    bach_mean_write = mean_data.participants_with_test(grades, 'writing score')[2]
+    highschooler_mean_math = mean_data.participants_with_test(grades, 'math score')[3]
+    highschooler_mean_read = mean_data.participants_with_test(grades, 'reading score')[3]
+    highschooler_mean_write = mean_data.participants_with_test(grades, 'writing score')[3]
+    # mean of bachelores + completed course
     print(
-        '\nHigh schoolers children math mean = ', schoolers_mean(grades, 'math score'), 
-        '\nHigh schoolers children reading mean = ', schoolers_mean(grades,'reading score'),
-        '\nHigh schoolers children writing mean = ', schoolers_mean(grades,'writing score'))
+        '\nBachelors children math mean = ', bach_mean_math,
+        '\nBachelors children reading mean = ',bach_mean_read,
+        '\nBachelors children writing mean = ', bach_mean_write)
+
+    # mean of high school + completed courses
+    print(
+        '\nHigh schoolers children math mean = ', highschooler_mean_math, 
+        '\nHigh schoolers children reading mean = ', highschooler_mean_read,
+        '\nHigh schoolers children writing mean = ', highschooler_mean_write)
 
 # 3 metric mean + median of course complete and uncompleted
 # Mean
@@ -226,8 +248,9 @@ def main():
 # plt.show()
 
 # write to csv
+    #bachelors_to_csv = mean_data.participants_with_test(grades,)[0]
     good_grades.to_csv('grades_data.csv', index=False)
-    bach_with_test(grades).to_csv('bach_grades.csv', index=False)
+    #bachelors_to_csv(grades).to_csv('bach_grades.csv', index=False)
 
 
 if __name__ == "__main__":
