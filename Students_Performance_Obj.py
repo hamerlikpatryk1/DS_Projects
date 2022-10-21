@@ -43,12 +43,12 @@ class PrepareData:
 
 class EducationWithCourse:
     def __init__(self):
-        print(f"Now I'll show results based curse done and level of parental education")
+        print(f"\nNOW I'LL SHOW RESULTS BASED CURSE DONE AND LEVEL OF PARENTAL EDUCATION")
 
     def participants_with_test(self, grades, score):
         bachelor_test = self._bach_with_test(grades)
         school_test = self._school_with_test(grades)
-        bach_test_mean = self._bach_mean( bachelor_test, score)
+        bach_test_mean = self._bach_mean(bachelor_test, score)
         schoolers_test_mean = self._schoolers_mean(school_test, score)
         return bachelor_test, school_test, bach_test_mean, schoolers_test_mean 
 
@@ -74,14 +74,42 @@ class EducationWithCourse:
         schoolers_test_mean = school_test[score].mean()
         return schoolers_test_mean
 
-# List of course completed
-def course_completed(grades):
-    course = grades.loc[(grades['test preparation course'] == "completed")]
-    return course
-# List of course uncompleted
-def course_uncompleted(grades):
-    no_course = grades.loc[(grades['test preparation course'] == "none")]
-    return no_course
+class CourseCompletedUncompleted:
+    def __init__(self):
+        print(f"\nNOW I'LL SHOW RESULTS BASED ON COURSE: ")
+
+    def course_impact(self, grades, score):
+        course_completed = self._course_completed(grades)
+        course_uncompleted = self._course_uncompleted(grades)
+        course_mean = self._course_mean(course_completed, score)
+        no_course_mean = self._no_course_mean(course_uncompleted, score)
+        course_median = self._course_median(course_completed, score)
+        no_course_median = self._no_course_median(course_uncompleted, score)
+        return course_completed, course_uncompleted, course_mean, no_course_mean, course_median, no_course_median
+    # List of course completed
+    def _course_completed(self, grades):
+        course_completed = grades.loc[(grades['test preparation course'] == "completed")]
+        return course_completed
+    # List of course uncompleted
+    def _course_uncompleted(self, grades):
+        course_uncompleted = grades.loc[(grades['test preparation course'] == "none")]
+        return course_uncompleted
+    # mean of course completed
+    def _course_mean(self, course_completed, score):
+        course_mean = course_completed[score].mean()
+        return course_mean
+    # mean of course uncompleted
+    def _no_course_mean(self, course_uncompleted, score):
+        no_course_mean = course_uncompleted[score].mean()
+        return no_course_mean
+    # median of course completed
+    def _course_median(self, course_completed, score):
+        course_median = course_completed[score].quantile(q = 0.50)
+        return course_median
+    # median of course uncompleted
+    def _no_course_median(self, course_uncompleted, score):
+        no_course_median = course_uncompleted[score].quantile(q = 0.50)
+        return no_course_median
 
 # Grade of men with lunch 
 def men_with_lunch(grades):
@@ -103,23 +131,6 @@ def women_without_lunch(grades):
     women_no_lunch = grades.loc[(grades['gender'] == "female")&
                             (grades['lunch'] =='free/reduced')]
     return women_no_lunch
-
-# mean of course completed
-def course_mean(grades, score):
-    course_mean = course_completed(grades)[score].mean()
-    return course_mean
-# mean of course uncompleted
-def no_course_mean(grades, score):
-    no_course_mean = course_uncompleted(grades)[score].mean()
-    return no_course_mean
-# median of course completed
-def course_median(grades, score):
-    course_mean = course_completed(grades)[score].quantile(q = 0.50)
-    return course_mean
-# median of course uncompleted
-def no_course_median(grades, score):
-    no_course_mean = course_uncompleted(grades)[score].quantile(q = 0.50)
-    return no_course_mean
 
 # mean/median of men/women with/without lunch
 def men_lunch_median(grades, score):
@@ -190,27 +201,28 @@ def main():
         '\nHigh schoolers children writing mean = ', highschooler_mean_write)
 
 # 3 metric mean + median of course complete and uncompleted
+    results_course_related = CourseCompletedUncompleted()
 # Mean
+#I'll try other convention - full name in print (no variable)
     print ( 
-        '\nCourse completed math mean = ', course_mean(grades, 'math score'),
-        '\nCourse completed reading mean =', course_mean(grades,'reading score'),
-        '\nCourse completed writing mean = ', course_mean(grades,'writing score') )
+        '\nCourse completed math mean = ', results_course_related.course_impact(grades, 'math score')[2],
+        '\nCourse completed reading mean =', results_course_related.course_impact(grades,'reading score')[2],
+        '\nCourse completed writing mean = ', results_course_related.course_impact(grades,'writing score')[2] )
     print ( 
-        '\nNone course completed math mean = ', no_course_mean(grades, 'math score'),
-        '\nNone course completed reading mean =', no_course_mean(grades,'reading score'),
-        '\nNone course completed writing mean = ', no_course_mean(grades,'writing score') )
+        '\nNone course completed math mean = ', results_course_related.course_impact(grades, 'math score')[3],
+        '\nNone course completed reading mean =', results_course_related.course_impact(grades,'reading score')[3],
+        '\nNone course completed writing mean = ', results_course_related.course_impact(grades,'writing score')[3] )
 # Median
     print ( 
-        '\nCourse completed math median = ', course_median(grades, 'math score'),
-        '\nCourse completed reading median =', course_median(grades,'reading score'),
-        '\nCourse completed writing median = ', course_median(grades,'writing score') )
+        '\nCourse completed math median = ', results_course_related.course_impact(grades, 'math score')[4],
+        '\nCourse completed reading median =', results_course_related.course_impact(grades,'reading score')[4],
+        '\nCourse completed writing median = ', results_course_related.course_impact(grades,'writing score')[4] )
     print ( 
-        '\nNone course completed math median = ', no_course_median(grades, 'math score'),
-        '\nNone course completed reading median =', no_course_median(grades,'reading score'),
-        '\nNone course completed writing median = ', no_course_median(grades,'writing score') )
+        '\nNone course completed math median = ', results_course_related.course_impact(grades, 'math score')[5],
+        '\nNone course completed reading median =', results_course_related.course_impact(grades,'reading score')[5],
+        '\nNone course completed writing median = ', results_course_related.course_impact(grades,'writing score')[5] )
  
 # Dodać plotting i zapisać go do pliku
-
 # 4 metric
 # Men with lunch 
     print ( 
