@@ -173,6 +173,10 @@ def main():
     highschooler_mean_math = mean_data.participants_with_test(grades, 'math score')[3]
     highschooler_mean_read = mean_data.participants_with_test(grades, 'reading score')[3]
     highschooler_mean_write = mean_data.participants_with_test(grades, 'writing score')[3]
+    bach_math = mean_data.participants_with_test(grades, 'math score')[0]
+    bach_read = mean_data.participants_with_test(grades, 'reading score')[0]
+    bach_write = mean_data.participants_with_test(grades, 'writing score')[0]
+    all_participants_with_test = bach_math.append([bach_read,bach_write])
     # mean of bachelores + completed course
     print(
         '\nBachelors children math mean = ', bach_mean_math,
@@ -248,9 +252,8 @@ def main():
 # plt.show()
 
 # write to csv
-    #bachelors_to_csv = mean_data.participants_with_test(grades,)[0]
     good_grades.to_csv('grades_data.csv', index=False)
-    #bachelors_to_csv(grades).to_csv('bach_grades.csv', index=False)
+    all_participants_with_test.to_csv('bach_grades.csv', index=False)
 
 
 if __name__ == "__main__":
