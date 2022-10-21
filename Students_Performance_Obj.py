@@ -111,59 +111,81 @@ class CourseCompletedUncompleted:
         no_course_median = course_uncompleted[score].quantile(q = 0.50)
         return no_course_median
 
-# Grade of men with lunch 
-def men_with_lunch(grades):
-    men_lunch = grades.loc[(grades['gender'] == "male") &
-                        (grades['lunch'] == 'standard')]
-    return men_lunch
-# Grade of men without lunch 
-def men_without_lunch(grades):
-    men_no_lunch = grades.loc[(grades['gender'] == "male") &
-                        (grades['lunch'] == 'free/reduced')]
-    return men_no_lunch
-# Grade of women with lunch 
-def women_with_lunch(grades):
-    women_lunch = grades.loc[(grades['gender'] == "female")&
-                        (grades['lunch'] == 'standard')]
-    return women_lunch
-# Grade of women without lunch 
-def women_without_lunch(grades):
-    women_no_lunch = grades.loc[(grades['gender'] == "female")&
-                            (grades['lunch'] =='free/reduced')]
-    return women_no_lunch
+class LunchAndGender:
+    def __init__(self):
+        print(f"\nNOW I'LL SHOW RESULTS BASED ON LUNCH AND GENDER: ")
 
-# mean/median of men/women with/without lunch
-def men_lunch_median(grades, score):
-    men_lunch = men_with_lunch(grades)[score].quantile(q = 0.50)
-    return men_lunch
+    def lunch_gender_impact(self, grades, score):
+        men_with_lunch = self._men_with_lunch(grades)
+        men_no_lunch = self._men_without_lunch(grades)
+        women_lunch = self._women_with_lunch(grades)
+        women_no_lunch = self._women_without_lunch(grades)
 
-def men_lunchmean(grades, score):
-    men_lunch = men_with_lunch(grades)[score].mean()
-    return men_lunch
+        men_lunch_median = self._men_lunch_median(men_with_lunch, grades, score)
+        men_lunch_mean = self._men_lunch_mean(men_with_lunch, grades, score)
+        men_no_lunch_median = self._men_no_lunch_median(men_no_lunch, grades, score)
+        men_no_lunch_mean = self._men_no_lunch_mean(men_no_lunch, grades, score)
+        women_lunch_median = self._women_lunch_median(women_lunch, grades, score)
+        women_lunch_mean = self._women_lunch_mean(women_lunch, grades, score)
+        women_no_lunch_median = self._women_no_lunch_median(women_no_lunch, grades, score)
+        women_no_lunch_mean = self._women_no_lunch_mean(women_no_lunch, grades, score)
+        
+        return men_with_lunch, men_no_lunch, women_lunch, women_no_lunch, men_lunch_median, men_lunch_mean, men_no_lunch_median, men_no_lunch_mean, women_lunch_median, women_lunch_mean, women_no_lunch_median, women_no_lunch_mean
+    
+    # List of course completed
+    # Grade of men with lunch 
+    def _men_with_lunch(self, grades):
+        men_lunch = grades.loc[(grades['gender'] == "male") &
+                            (grades['lunch'] == 'standard')]
+        return men_lunch
+    # Grade of men without lunch 
+    def _men_without_lunch(self, grades):
+        men_no_lunch = grades.loc[(grades['gender'] == "male") &
+                            (grades['lunch'] == 'free/reduced')]
+        return men_no_lunch
+    # Grade of women with lunch 
+    def _women_with_lunch(self, grades):
+        women_lunch = grades.loc[(grades['gender'] == "female")&
+                            (grades['lunch'] == 'standard')]
+        return women_lunch
+    # Grade of women without lunch 
+    def _women_without_lunch(self, grades):
+        women_no_lunch = grades.loc[(grades['gender'] == "female")&
+                                (grades['lunch'] =='free/reduced')]
+        return women_no_lunch
 
-def men_no_lunch_median(grades, score):
-    men_no_lunch = men_without_lunch(grades)[score].quantile(q = 0.50)
-    return men_no_lunch
+    # mean/median of men/women with/without lunch
+    def _men_lunch_median(self, men_with_lunch, grades, score):
+        men_lunch = men_with_lunch[score].quantile(q = 0.50)
+        return men_lunch
 
-def men_no_lunch_mean(grades, score):
-    men_no_lunch = men_without_lunch(grades)[score].mean()
-    return men_no_lunch
+    def _men_lunch_mean(self, men_with_lunch, grades, score):
+        men_lunch = men_with_lunch[score].mean()
+        return men_lunch
 
-def women_lunch_median(grades, score):
-    woman_lunch = women_with_lunch(grades)[score].quantile(q = 0.50)
-    return woman_lunch
+    def _men_no_lunch_median(self, men_without_lunch, grades, score):
+        men_no_lunch = men_without_lunch[score].quantile(q = 0.50)
+        return men_no_lunch
 
-def women_lunch_mean(grades, score):
-    woman_lunch = women_with_lunch(grades)[score].mean()
-    return woman_lunch
+    def _men_no_lunch_mean(self, men_without_lunch, grades, score):
+        men_no_lunch = men_without_lunch[score].mean()
+        return men_no_lunch
 
-def women_no_lunch_median(grades, score):
-    woman_no_lunch = women_without_lunch(grades)[score].quantile(q = 0.50)
-    return woman_no_lunch
+    def _women_lunch_median(self, women_with_lunch, grades, score):
+        woman_lunch = women_with_lunch[score].quantile(q = 0.50)
+        return woman_lunch
 
-def women_no_lunch_mean(grades, score):
-    woman_no_lunch = women_without_lunch(grades)[score].mean() #nie trxebas przypisywać zmiennej - od razu return -->> dać zmienne/funkcje camel case (podłoga)
-    return woman_no_lunch
+    def _women_lunch_mean(self, women_with_lunch, grades, score):
+        woman_lunch = women_with_lunch[score].mean()
+        return woman_lunch
+
+    def _women_no_lunch_median(self, women_without_lunch, grades, score):
+        woman_no_lunch = women_without_lunch[score].quantile(q = 0.50)
+        return woman_no_lunch
+
+    def _women_no_lunch_mean(self, women_without_lunch, grades, score):
+        woman_no_lunch = women_without_lunch[score].mean() #nie trxebas przypisywać zmiennej - od razu return -->> dać zmienne/funkcje camel case (podłoga)
+        return woman_no_lunch
 
 def main():
 
@@ -224,38 +246,39 @@ def main():
  
 # Dodać plotting i zapisać go do pliku
 # 4 metric
+    results_lunch_gender_related = LunchAndGender()
 # Men with lunch 
     print ( 
-        '\nMen with lunch math mean = ', men_lunchmean(grades, 'math score'),
-        '\nMen with lunch reading mean =', men_lunchmean(grades,'reading score'),
-        '\nMen with lunch writing mean = ', men_lunchmean(grades,'writing score'),
-        '\nMen with lunch math median = ', men_lunch_median(grades, 'math score'),
-        '\nMen with lunch reading median =', men_lunch_median(grades,'reading score'),
-        '\nMen with lunch writing median = ', men_lunch_median(grades,'writing score'))
+        '\nMen with lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[5],
+        '\nMen with lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[5],
+        '\nMen with lunch writing mean = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[5],
+        '\nMen with lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[4],
+        '\nMen with lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[4],
+        '\nMen with lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[4])
 # Woman with lunch 
     print ( 
-        '\nWomen with lunch math mean = ', women_lunch_mean(grades, 'math score'),
-        '\nWomen with lunch reading mean =', women_lunch_mean(grades,'reading score'),
-        '\nWomen with lunch writing mean = ', women_lunch_mean(grades,'writing score'),
-        '\nWomen with lunch math median = ', women_lunch_median(grades, 'math score'),
-        '\nWomen with lunch reading median =', women_lunch_median(grades,'reading score'),
-        '\nWomen with lunch writing median = ', women_lunch_median(grades,'writing score'))
+        '\nWomen with lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[9],
+        '\nWomen with lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[9],
+        '\nWomen with lunch writing mean = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[9],
+        '\nWomen with lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[8],
+        '\nWomen with lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[8],
+        '\nWomen with lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[8])
 # Men without lunch
     print ( 
-        '\nMen without lunch math mean = ', men_no_lunch_mean(grades, 'math score'),
-        '\nMen without lunch reading mean =', men_no_lunch_mean(grades,'reading score'),
-        '\nMen without lunch writing mean = ', men_no_lunch_mean(grades,'writing score'),
-        '\nMen without lunch math median = ', men_no_lunch_median(grades, 'math score'),
-        '\nMen without lunch reading median =', men_no_lunch_median(grades,'reading score'),
-        '\nMen without lunch writing median = ', men_no_lunch_median(grades,'writing score'))
+        '\nMen without lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[7],
+        '\nMen without lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[7],
+        '\nMen without lunch writing mean = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[7],
+        '\nMen without lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[6],
+        '\nMen without lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[6],
+        '\nMen without lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[6])
 # Woman without lunch
     print ( 
-        '\nWomen without lunch math mean = ', women_no_lunch_mean(grades, 'math score'),
-        '\nWomen without lunch reading mean =', women_no_lunch_mean(grades,'reading score'),
-        '\nWomen without lunch writing mean = ', women_no_lunch_mean(grades,'writing score'),
-        '\nWomen without lunch math median = ', women_no_lunch_median(grades, 'math score'),
-        '\nWomen without lunch reading median =', women_no_lunch_median(grades,'reading score'),
-        '\nWomen without lunch writing median = ', women_no_lunch_median(grades,'writing score'))
+        '\nWomen without lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[11],
+        '\nWomen without lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[11],
+        '\nWomen without lunch writing mean = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[11],
+        '\nWomen without lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[10],
+        '\nWomen without lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[10],
+        '\nWomen without lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[10])
 
 # plotting data
 # sns.relplot(data=grades, x='reading score', y='math score', hue ='test preparation course')
