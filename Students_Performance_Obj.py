@@ -3,11 +3,7 @@
 # pip install -r requirements.txt
 from fileinput import filename
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
 
-# sns.set_theme()
 
 # get data from csv file
 class PrepareData:
@@ -25,21 +21,18 @@ class PrepareData:
         return students_data, grades, good_grades
     
     def _read_CSV(self, filename): 
-        students_data = pd.read_csv(filename)
-        return students_data
+        return pd.read_csv(filename)
 
     # sorts data by mathscore
     def _math_sort(self, students_data):
-        grades = students_data.sort_values(by = "math score", ascending = False, kind = 'mergesort')
-        print(grades)
-        return grades
+        return students_data.sort_values(by = "math score", ascending = False, kind = 'mergesort')
 
     # filtering the highest scores #loc 
     def _best_grade(self, grades):
-        good_grades = grades.loc[(grades['math score'] >= 66) &
+        return grades.loc[(grades['math score'] >= 66) &
                             (grades['reading score'] >= 66) &
                             (grades['writing score'] >= 66)]
-        return good_grades
+        
 
 class EducationWithCourse:
     def __init__(self):
@@ -54,25 +47,22 @@ class EducationWithCourse:
 
     # bachelores with course 
     def _bach_with_test(self, grades):
-        bachelor_test = grades.loc[(grades['parental level of education'] == "bachelor's degree") &
+        return grades.loc[(grades['parental level of education'] == "bachelor's degree") &
                             (grades['test preparation course'] == "completed")]
-        return bachelor_test
-
+        
     # highschool with course    
     def _school_with_test(self, grades):
-        school_test = grades.loc[(grades['parental level of education'] == "some high school") &
+        return grades.loc[(grades['parental level of education'] == "some high school") &
                             (grades['test preparation course'] == "completed")]
-        return school_test
-
+         
     # mean of bachwithtest
     def _bach_mean(self, bachelor_test, score):
-        bach_test_mean = bachelor_test[score].mean()
-        return bach_test_mean
-
+        return bachelor_test[score].mean()
+         
     # mean of high schoolers
     def _schoolers_mean(self, school_test, score):
-        schoolers_test_mean = school_test[score].mean()
-        return schoolers_test_mean
+        return school_test[score].mean()
+         
 
 class CourseCompletedUncompleted:
     def __init__(self):
@@ -86,30 +76,31 @@ class CourseCompletedUncompleted:
         course_median = self._course_median(course_completed, score)
         no_course_median = self._no_course_median(course_uncompleted, score)
         return course_completed, course_uncompleted, course_mean, no_course_mean, course_median, no_course_median
+
     # List of course completed
     def _course_completed(self, grades):
-        course_completed = grades.loc[(grades['test preparation course'] == "completed")]
-        return course_completed
+        return grades.loc[(grades['test preparation course'] == "completed")]
+         
     # List of course uncompleted
     def _course_uncompleted(self, grades):
-        course_uncompleted = grades.loc[(grades['test preparation course'] == "none")]
-        return course_uncompleted
+        return grades.loc[(grades['test preparation course'] == "none")]
+         
     # mean of course completed
     def _course_mean(self, course_completed, score):
-        course_mean = course_completed[score].mean()
-        return course_mean
+        return course_completed[score].mean()
+         
     # mean of course uncompleted
     def _no_course_mean(self, course_uncompleted, score):
-        no_course_mean = course_uncompleted[score].mean()
-        return no_course_mean
+        return course_uncompleted[score].mean()
+    
     # median of course completed
     def _course_median(self, course_completed, score):
-        course_median = course_completed[score].quantile(q = 0.50)
-        return course_median
+        return course_completed[score].quantile(q = 0.50)
+        
     # median of course uncompleted
     def _no_course_median(self, course_uncompleted, score):
-        no_course_median = course_uncompleted[score].quantile(q = 0.50)
-        return no_course_median
+        return course_uncompleted[score].quantile(q = 0.50)
+
 
 class LunchAndGender:
     def __init__(self):
@@ -135,58 +126,50 @@ class LunchAndGender:
     # List of course completed
     # Grade of men with lunch 
     def _men_with_lunch(self, grades):
-        men_lunch = grades.loc[(grades['gender'] == "male") &
+        return grades.loc[(grades['gender'] == "male") &
                             (grades['lunch'] == 'standard')]
-        return men_lunch
+         
     # Grade of men without lunch 
     def _men_without_lunch(self, grades):
-        men_no_lunch = grades.loc[(grades['gender'] == "male") &
+        return grades.loc[(grades['gender'] == "male") &
                             (grades['lunch'] == 'free/reduced')]
-        return men_no_lunch
+
     # Grade of women with lunch 
     def _women_with_lunch(self, grades):
-        women_lunch = grades.loc[(grades['gender'] == "female")&
+        return grades.loc[(grades['gender'] == "female")&
                             (grades['lunch'] == 'standard')]
-        return women_lunch
+
     # Grade of women without lunch 
     def _women_without_lunch(self, grades):
-        women_no_lunch = grades.loc[(grades['gender'] == "female")&
+        return grades.loc[(grades['gender'] == "female")&
                                 (grades['lunch'] =='free/reduced')]
-        return women_no_lunch
 
     # mean/median of men/women with/without lunch
     def _men_lunch_median(self, men_with_lunch, grades, score):
-        men_lunch = men_with_lunch[score].quantile(q = 0.50)
-        return men_lunch
+        return men_with_lunch[score].quantile(q = 0.50)
 
     def _men_lunch_mean(self, men_with_lunch, grades, score):
-        men_lunch = men_with_lunch[score].mean()
-        return men_lunch
+        return men_with_lunch[score].mean()
 
     def _men_no_lunch_median(self, men_without_lunch, grades, score):
-        men_no_lunch = men_without_lunch[score].quantile(q = 0.50)
-        return men_no_lunch
+        return men_without_lunch[score].quantile(q = 0.50)
 
     def _men_no_lunch_mean(self, men_without_lunch, grades, score):
-        men_no_lunch = men_without_lunch[score].mean()
-        return men_no_lunch
+        return men_without_lunch[score].mean()
 
     def _women_lunch_median(self, women_with_lunch, grades, score):
-        woman_lunch = women_with_lunch[score].quantile(q = 0.50)
-        return woman_lunch
+        return women_with_lunch[score].quantile(q = 0.50)
 
     def _women_lunch_mean(self, women_with_lunch, grades, score):
-        woman_lunch = women_with_lunch[score].mean()
-        return woman_lunch
+        return women_with_lunch[score].mean()
 
     def _women_no_lunch_median(self, women_without_lunch, grades, score):
-        woman_no_lunch = women_without_lunch[score].quantile(q = 0.50)
-        return woman_no_lunch
+        return women_without_lunch[score].quantile(q = 0.50)
 
     def _women_no_lunch_mean(self, women_without_lunch, grades, score):
-        woman_no_lunch = women_without_lunch[score].mean() #nie trxebas przypisywać zmiennej - od razu return -->> dać zmienne/funkcje camel case (podłoga)
-        return woman_no_lunch
+        return women_without_lunch[score].mean()
 
+        
 def main():
 
     prepared_data = PrepareData("Patryk")
@@ -279,12 +262,6 @@ def main():
         '\nWomen without lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')[10],
         '\nWomen without lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')[10],
         '\nWomen without lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')[10])
-
-# plotting data
-# sns.relplot(data=grades, x='reading score', y='math score', hue ='test preparation course')
-# sns.relplot(x="math score", y="reading score", data=good_grades)
-# sns.displot(good_grades, x="math score", hue="gender", element="step")
-# plt.show()
 
 # write to csv
     good_grades.to_csv('grades_data.csv', index=False)
