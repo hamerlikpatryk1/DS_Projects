@@ -5,8 +5,20 @@ from fileinput import filename
 import pandas as pd
 
 
-# get data from csv file
 class PrepareData:
+    """Prepare data to calculations
+    
+    Filtering the highest scores done by loc function
+
+    Attributes:
+    ['students_data']: Reads csv, 
+    ['grades']: sorts it csv, 
+    ['good_grades']: shows only grades greater than 66 points
+        
+    Returns:
+    Dictionary with attributes
+    """
+
     def __init__(self, name):
         print(f"Hello {name} I'm preparing data")
         self.name = name
@@ -24,11 +36,9 @@ class PrepareData:
     def _read_CSV(self, filename): 
         return pd.read_csv(filename)
 
-    # sorts data by mathscore
     def _students_data(self, students_data):
         return students_data.sort_values(by = "math score", ascending = False, kind = 'mergesort')
 
-    # filtering the highest scores #loc 
     def _good_grades(self, grades):
         return grades.loc[(grades['math score'] >= 66) &
                             (grades['reading score'] >= 66) &
@@ -36,6 +46,18 @@ class PrepareData:
         
 
 class EducationWithCourse:
+    """Shows results based on parents educational level and doing the course
+        
+    Attributes:
+    ['bachelor_test']: parents with bachelor education and test done
+    ['school_test']: parents with high school education and test done
+    ['bach_test_mean']: mean of bachelors   
+    ['schoolers_test_mean']: mean of high schoolers
+        
+    Returns:
+    Dictionary with attributes
+    """
+
     def __init__(self):
         print(f"\nNOW I'LL SHOW RESULTS BASED CURSE DONE AND LEVEL OF PARENTAL EDUCATION")
 
@@ -46,26 +68,37 @@ class EducationWithCourse:
         participants_test_dict['bach_test_mean'] = self._bach_mean(participants_test_dict['bachelor_test'], score)
         participants_test_dict['schoolers_test_mean'] = self._schoolers_mean(participants_test_dict['school_test'] , score)
         return participants_test_dict
-    # bachelores with course 
+
     def _bach_with_test(self, grades):
         return grades.loc[(grades['parental level of education'] == "bachelor's degree") &
                             (grades['test preparation course'] == "completed")]
         
-    # highschool with course    
     def _school_with_test(self, grades):
         return grades.loc[(grades['parental level of education'] == "some high school") &
                             (grades['test preparation course'] == "completed")]
          
-    # mean of bachwithtest
     def _bach_mean(self, bachelor_test, score):
         return bachelor_test[score].mean()
          
-    # mean of high schoolers
     def _schoolers_mean(self, school_test, score):
         return school_test[score].mean()
          
 
 class CourseCompletedUncompleted:
+    """Shows results based on doing the course
+        
+    Attributes:
+    ['course_completed']: listed the people with course completed
+    ['course_uncompleted']: listed the people with course uncompleted
+    ['course_mean']: shows mean of people with course completed
+    ['no_course_mean']:shows mean of people with course uncompleted
+    ['course_median']: shows median of people with course completed
+    ['no_course_median']: shows median of people with course uncompleted
+        
+    Returns:
+    Dictionary with attributes
+    """
+
     def __init__(self):
         print(f"\nNOW I'LL SHOW RESULTS BASED ON COURSE: ")
 
@@ -79,32 +112,48 @@ class CourseCompletedUncompleted:
         course_impact_dict ['no_course_median'] = self._no_course_median(course_impact_dict['course_uncompleted'], score)
         return course_impact_dict
 
-    # List of course completed
     def _course_completed(self, grades):
         return grades.loc[(grades['test preparation course'] == "completed")]
          
-    # List of course uncompleted
     def _course_uncompleted(self, grades):
         return grades.loc[(grades['test preparation course'] == "none")]
          
-    # mean of course completed
     def _course_mean(self, course_completed, score):
         return course_completed[score].mean()
          
-    # mean of course uncompleted
     def _no_course_mean(self, course_uncompleted, score):
         return course_uncompleted[score].mean()
     
-    # median of course completed
     def _course_median(self, course_completed, score):
         return course_completed[score].quantile(q = 0.50)
         
-    # median of course uncompleted
     def _no_course_median(self, course_uncompleted, score):
         return course_uncompleted[score].quantile(q = 0.50)
 
 
 class LunchAndGender:
+    """Shows results based on doing the course
+        
+    Attributes:
+    ['men_with_lunch']: shows results of men with paid lunch
+    ['men_no_lunch']: shows results of men with unpaid lunch
+    ['women_lunch']: shows results of women with paid lunch
+    ['women_no_lunch']: shows results of women with unpaid lunch
+
+    ['men_lunch_median']: shows median of men with paid lunch
+    ['men_lunch_mean']: shows mean of men with paid lunch
+    ['men_no_lunch_median']: shows median of men with unpaid lunch
+    ['men_no_lunch_mean']: shows mean of men with unpaid lunch
+
+    ['women_lunch_median']: shows median of women with paid lunch
+    ['women_lunch_mean']: shows mean of women with paid lunch
+    ['women_no_lunch_median']: shows median of women with unpaid lunch
+    ['women_no_lunch_mean']: shows mean of women with unpaid lunch
+        
+    Returns:
+    Dictionary with attributes   
+    """
+
     def __init__(self):
         print(f"\nNOW I'LL SHOW RESULTS BASED ON LUNCH AND GENDER: ")
 
@@ -127,28 +176,22 @@ class LunchAndGender:
         
         return lunch_gender_dict
 
-    # List of course completed
-    # Grade of men with lunch 
     def _men_with_lunch(self, grades):
         return grades.loc[(grades['gender'] == "male") &
                             (grades['lunch'] == 'standard')]
          
-    # Grade of men without lunch 
     def _men_without_lunch(self, grades):
         return grades.loc[(grades['gender'] == "male") &
                             (grades['lunch'] == 'free/reduced')]
 
-    # Grade of women with lunch 
     def _women_with_lunch(self, grades):
         return grades.loc[(grades['gender'] == "female")&
                             (grades['lunch'] == 'standard')]
 
-    # Grade of women without lunch 
     def _women_without_lunch(self, grades):
         return grades.loc[(grades['gender'] == "female")&
                                 (grades['lunch'] =='free/reduced')]
-
-    # mean/median of men/women with/without lunch
+                                
     def _men_lunch_median(self, men_with_lunch, grades, score):
         return men_with_lunch[score].quantile(q = 0.50)
 
@@ -180,6 +223,7 @@ def main():
     students_data = prepared_data.preparator('StudentsPerformance.csv')['students_data']
     print(students_data)
     grades = prepared_data.preparator('StudentsPerformance.csv')['grades']
+    
 # 1 metric 
     good_grades = prepared_data.preparator('StudentsPerformance.csv')['good_grades']
     print(good_grades)
@@ -196,13 +240,12 @@ def main():
     bach_read = mean_data.participants_with_test(grades, 'reading score')['bachelor_test']
     bach_write = mean_data.participants_with_test(grades, 'writing score')['bachelor_test']
     all_participants_with_test = bach_math.append([bach_read,bach_write])
-    # mean of bachelores + completed course
+
     print(
         '\nBachelors children math mean = ', bach_mean_math,
         '\nBachelors children reading mean = ',bach_mean_read,
         '\nBachelors children writing mean = ', bach_mean_write)
 
-    # mean of high school + completed courses
     print(
         '\nHigh schoolers children math mean = ', highschooler_mean_math, 
         '\nHigh schoolers children reading mean = ', highschooler_mean_read,
@@ -210,8 +253,7 @@ def main():
 
 # 3 metric mean + median of course complete and uncompleted
     results_course_related = CourseCompletedUncompleted()
-# Mean
-#I'll try other convention - full name in print (no variable)
+
     print ( 
         '\nCourse completed math mean = ', results_course_related.course_impact(grades, 'math score')['course_mean'],
         '\nCourse completed reading mean =', results_course_related.course_impact(grades,'reading score')['course_mean'],
@@ -220,7 +262,7 @@ def main():
         '\nNone course completed math mean = ', results_course_related.course_impact(grades, 'math score')['no_course_mean'],
         '\nNone course completed reading mean =', results_course_related.course_impact(grades,'reading score')['no_course_mean'],
         '\nNone course completed writing mean = ', results_course_related.course_impact(grades,'writing score')['no_course_mean'] )
-# Median
+
     print ( 
         '\nCourse completed math median = ', results_course_related.course_impact(grades, 'math score')['course_median'],
         '\nCourse completed reading median =', results_course_related.course_impact(grades,'reading score')['course_median'],
@@ -229,11 +271,9 @@ def main():
         '\nNone course completed math median = ', results_course_related.course_impact(grades, 'math score')['no_course_median'],
         '\nNone course completed reading median =', results_course_related.course_impact(grades,'reading score')['no_course_median'],
         '\nNone course completed writing median = ', results_course_related.course_impact(grades,'writing score')['no_course_median'] )
- 
-# Dodać plotting i zapisać go do pliku
+
 # 4 metric
     results_lunch_gender_related = LunchAndGender()
-# Men with lunch 
     print ( 
         '\nMen with lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['men_lunch_mean'],
         '\nMen with lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['men_lunch_mean'],
@@ -241,7 +281,6 @@ def main():
         '\nMen with lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['men_lunch_median'],
         '\nMen with lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['men_lunch_median'],
         '\nMen with lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')['men_lunch_median'])
-# Woman with lunch 
     print ( 
         '\nWomen with lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['women_lunch_mean'],
         '\nWomen with lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['women_lunch_mean'],
@@ -249,7 +288,6 @@ def main():
         '\nWomen with lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['women_lunch_median'],
         '\nWomen with lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['women_lunch_median'],
         '\nWomen with lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')['women_lunch_median'])
-# Men without lunch
     print ( 
         '\nMen without lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['men_no_lunch_mean'],
         '\nMen without lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['men_no_lunch_mean'],
@@ -257,7 +295,6 @@ def main():
         '\nMen without lunch math median = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['men_no_lunch_median'],
         '\nMen without lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['men_no_lunch_median'],
         '\nMen without lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')['men_no_lunch_median'])
-# Woman without lunch
     print ( 
         '\nWomen without lunch math mean = ', results_lunch_gender_related.lunch_gender_impact(grades, 'math score')['women_no_lunch_mean'],
         '\nWomen without lunch reading mean =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['women_no_lunch_mean'],
@@ -266,7 +303,6 @@ def main():
         '\nWomen without lunch reading median =', results_lunch_gender_related.lunch_gender_impact(grades,'reading score')['women_no_lunch_median'],
         '\nWomen without lunch writing median = ', results_lunch_gender_related.lunch_gender_impact(grades,'writing score')['women_no_lunch_median'])
 
-# write to csv
     good_grades.to_csv('grades_data.csv', index=False)
     all_participants_with_test.to_csv('bach_grades.csv', index=False)
 
